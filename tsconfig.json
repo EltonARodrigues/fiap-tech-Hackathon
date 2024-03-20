@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "rootDirs": ["src"],
+    "baseUrl": "./src",
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "types": ["node", "jest", "express"],
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "paths": {
+      "~datasources/*": ["datasources/*"],
+      "~interfaceAdapters/*": ["interfaceAdapters/*"],
+      "~presenters/*": ["presenters/*"],
+      "~domain/*": ["domain/*"]
+    },
+    "typeRoots": ["./src/@types","./node_modules/@types"]
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

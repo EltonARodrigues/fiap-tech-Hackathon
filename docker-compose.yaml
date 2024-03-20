@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    networks:
+      - localstack-network
+    environment:
+      - SERVICES=sqs
+      - DEFAULT_REGION=us-east-1
+      - DATA_DIR=/tmp/localstack/data
+
+  sqs-setup:
+    image: localstack/localstack
+    entrypoint: /bin/bash
+    depends_on:
+      - localstack
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    networks:
+     - localstack-network
+    command: 
+      - "-c"
+      - |
+        aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name notification_queue
+
+  mongo:
+      image: mongo
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: MongoDB2019!
+      ports:
+        - "27017:27017"
+  # mysql:
+  #   image: mysql
+  #   container_name: fiap-soat-project_db
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=admin123
+  #     - MYSQL_DATABASE=fiap-soat-project_db
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - db:/var/lib/mysql
+
+volumes:
+   db:
+
+networks:
+  localstack-network:
+    driver: bridge
