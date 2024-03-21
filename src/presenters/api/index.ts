@@ -14,9 +14,8 @@ export default class API {
   constructor() {
     this.app = express();
 
-    this.app.use(helmet());
-
     this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+    // this.app.use(helmet());
 
     this.server = new Server({ appConfig: this.app });
 
