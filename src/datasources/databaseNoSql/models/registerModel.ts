@@ -16,6 +16,10 @@ const RegisterSchema = new mongoose.Schema<RegisterDTO>({
     type: Date,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
 });
 
 const RegisterModel = mongoose.model("Register", RegisterSchema);

@@ -18,7 +18,6 @@ export default class API {
 
     this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-
     this.server = new Server({ appConfig: this.app });
 
     const healthRouter = express.Router({});

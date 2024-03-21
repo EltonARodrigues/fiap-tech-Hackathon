@@ -15,11 +15,14 @@ export class RegisterController {
 
   static async findEmployeeRegisters(
     registerRepository: RegisterRepository,
-    clientId: string
-  ): Promise<RegisterDTO[]> {
+    clientId: string,
+    date: string
+  // ): Promise<RegisterDTO[]> {
+  ) {
     return await RegisterUseCase.findEmployeeRegisters(
       registerRepository,
-      clientId
+      clientId,
+      date
     );
   }
 

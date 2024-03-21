@@ -1,3 +1,4 @@
+import { format, compareAsc } from "date-fns";
 import express, { NextFunction, Request, Response } from "express";
 
 import { RegisterController } from "controllers/registerController";
@@ -52,6 +53,13 @@ registerRouter.get(
  * /employee/register/find:
  *   get:
  *     summary: filta e lista registros de ponto do usuário
+ *     parameters:
+ *        - in: query
+ *          name: date
+ *          schema:
+ *            type: string
+ *          required: false
+ *          description: filtrar dia YYYY-MM-DD
  *     tags:
  *       - Employee
  *     security:
@@ -75,9 +83,17 @@ registerRouter.get(
       const { query } = req; // TODO
       const clientId = "1111" // TODO
 
+      // const date = query?.date 
+      //   ? format(new Date(query?.date as string).toDateString, 'yyyy-MM-dd') 
+      //   : format(new Date(), 'yyyy-MM-dd');
+      const date = query?.date 
+        ? query?.date as string
+        : format(new Date(), 'yyyy-MM-dd');
+      console.log(date)
       const registers = await RegisterController.findEmployeeRegisters(
         dbRegisterRepository,
-        clientId
+        clientId,
+        date
       )
 
       return res.status(200).json({
@@ -109,7 +125,7 @@ registerRouter.get(
  *         description: Erro na api.
  */
 registerRouter.get(
-  "/register/report",
+  "/employee/register/report",
   async (
     req: Request<unknown, unknown>,
     res: Response,
