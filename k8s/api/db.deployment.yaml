@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fiap-tech-hackathon-db-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fiap-tech-hackathon-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fiap-tech-hackathon-db
+  template:
+    metadata:
+      labels:
+        app: fiap-tech-hackathon-db
+    spec:
+      containers:
+        - env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: mongo_username
+                  name: fiap-tech-secrets
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: mongo_password
+                  name: fiap-tech-secrets
+          image: mongo:latest
+          name: mongodb
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: tech-challenge-mongo-persistent-storage
+      volumes:
+        - name: tech-challenge-mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: fiap-tech-hackathon-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fiap-tech-hackathon-db-svc
+spec:
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 27017
+  selector:
+    app: fiap-tech-hackathon-db
+  type: ClusterIP

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  fiap-tech-hackathon-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  fiap-tech-hackathon
+  template:
+    metadata:
+      labels:
+        app:  fiap-tech-hackathon
+    spec:
+      containers:
+        - name:  fiap-tech-hackathon-container
+          image: eltonarodrigues/fiap-tech-soat-hackathon:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: fiap-tech-secrets
+                  key: node_env
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: mongo_username
+                  name: fiap-tech-secrets
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: mongo_password
+                  name: fiap-tech-secrets
+                  
+            - name: DB_URI
+              value: mongodb://$(MONGO_USERNAME):$(MONGO_PASSWORD)@fiap-tech-hackathon-db-svc:27017
+              
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  fiap-tech-hackathon-svc
+spec:
+  type: NodePort
+  # type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 3000
+      nodePort: 30081
+  selector:
+    app:  fiap-tech-hackathon
