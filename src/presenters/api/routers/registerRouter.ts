@@ -4,6 +4,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { RegisterController } from "controllers/registerController";
 import FilaService from "~datasources/queues/FilaService";
 import RegisterDataBaseRepository from "~datasources/databaseNoSql/repository/registerDatabaseRepository";
+import { authenticate } from "../middleware/getClientId";
 
 const registerRouter = express.Router({});
 
@@ -25,6 +26,7 @@ const dbRegisterRepository = new RegisterDataBaseRepository();
  */
 registerRouter.get(
   "/employee/register",
+  authenticate,
   async (
     req: Request<unknown, unknown>,
     res: Response,
@@ -32,7 +34,7 @@ registerRouter.get(
   ) => {
     try {
 
-      const clientId = "1111" // TODO
+      const clientId = req.clienteId;
       const newRegister = await RegisterController.registerEmployee(
         dbRegisterRepository,
         clientId
@@ -74,6 +76,7 @@ registerRouter.get(
  */
 registerRouter.get(
   "/employee/register/find",
+  authenticate,
   async (
     req: Request<unknown, unknown>,
     res: Response,
@@ -81,7 +84,7 @@ registerRouter.get(
   ) => {
     try {
       const { query } = req; // TODO
-      const clientId = "1111" // TODO
+      const clientId = req.clienteId;
 
       // const date = query?.date 
       //   ? format(new Date(query?.date as string).toDateString, 'yyyy-MM-dd') 
@@ -126,14 +129,14 @@ registerRouter.get(
  */
 registerRouter.get(
   "/employee/register/report",
+  authenticate,
   async (
     req: Request<unknown, unknown>,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      const { query } = req; // TODO
-      const clientId = "1111" // TODO
+      const clientId = req.clienteId;
 
       const registers = await RegisterController.sendReportNotification(
         filaService,
