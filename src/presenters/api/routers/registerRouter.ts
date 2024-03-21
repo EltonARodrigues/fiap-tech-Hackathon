@@ -136,7 +136,8 @@ registerRouter.get(
     next: NextFunction
   ) => {
     try {
-      const clientId = req.clienteId;
+      // const clientId = req.clienteId;
+      const clientId = '1111' // MOCK LAST MONTH SEED TO TEST
 
       const registers = await RegisterController.sendReportNotification(
         filaService,
@@ -145,7 +146,7 @@ registerRouter.get(
       )
 
       return res.status(200).json({
-        status: "success",
+        status: "schedule reports with success",
         message: registers,
       });
     } catch (err: unknown) {

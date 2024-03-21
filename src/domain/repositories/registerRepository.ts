@@ -13,7 +13,7 @@ export interface RegisterDTO extends RegisterBaseDTO {
 export interface FilterUserRegister {
   clientId: string;
   date?: string;
-  month?: string;
+  lastMonth?: boolean;
 }
 
 export default interface RegisterRepository {

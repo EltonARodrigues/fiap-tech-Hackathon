@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { format,lastDayOfMonth, parseISO, startOfDay, endOfDay } from 'date-fns'
+import { format,lastDayOfMonth, parseISO, startOfDay, endOfDay, sub, startOfMonth } from 'date-fns'
 import RegisterRepository, { FilterUserRegister, RegisterDTO } from "~domain/repositories/registerRepository";
 
 import RegisterModel from "../models/registerModel";
@@ -26,13 +26,15 @@ class RegisterDataBaseRepository implements RegisterRepository {
       }
     }
 
-    if (filter.month) {
-      const today = new Date();
-      const firstDateOfMonth = startOfDay(new Date(format(today, 'yyyy-MM-01')));
-      const lastDateOfMonth = lastDayOfMonth(today);
+    if (filter.lastMonth) {
+      const lastMonth = sub(new Date(), {
+        months: 1,
+      })
+      const firstDateOfMonth = startOfMonth(lastMonth);
+      const lastDateOfMonth = lastDayOfMonth(lastMonth);
       dbFIlter.date = {
-        $gte: new Date(firstDateOfMonth),
-        $lt: new Date(lastDateOfMonth)
+        $gte: firstDateOfMonth,
+        $lt: lastDateOfMonth
       }
     }
     console.log(dbFIlter)

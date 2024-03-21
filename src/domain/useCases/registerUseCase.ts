@@ -1,4 +1,4 @@
-import { differenceInHours, format } from "date-fns";
+import { differenceInHours, format, sub } from "date-fns";
 import dotenv from "dotenv";
 
 import Register from "~domain/entities/register";
@@ -101,7 +101,8 @@ export default class RegisterUseCase {
   ) {
 
     const filter: FilterUserRegister = {
-      clientId
+      clientId,
+      lastMonth: true
     }
 
     const reports = await registerRepository.findEmployeeRegisters(filter);
@@ -125,7 +126,7 @@ export default class RegisterUseCase {
 
       message = `TOTAL MOUNT HOURS WORKED: ${totalWorkedHours}h\n\n${message}`
       console.log(message)
-      // await filaRepository.enviaParaFila(message, NOTIFICATION_QUEUE);
+      await filaRepository.enviaParaFila(message, NOTIFICATION_QUEUE);
 
     } catch (err) {
       throw new Error('Erro to send notification');
