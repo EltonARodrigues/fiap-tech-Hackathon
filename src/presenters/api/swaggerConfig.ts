@@ -5,7 +5,7 @@ const options = {
     info: {
       title: "Fiap Tech HACKATHON",
       version: "1.0.0",
-      description: "Projeto Fase I - SOAT turma I",
+      description: "Projeto Hackathon - Controle de ponto",
     },
     servers: [{ url: "/api" }],
     components: {
