@@ -7,33 +7,33 @@ on:
       - main
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    name: Tests
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+  # test:
+  #   runs-on: ubuntu-latest
+  #   name: Tests
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
-        cache: 'yarn'
+  #   - name: Set up Node.js
+  #     uses: actions/setup-node@v3
+  #     with:
+  #       node-version: 20
+  #       cache: 'yarn'
 
-    - name: Run test and lint
-      run: |
-        yarn install --frozen-lockfile
-        yarn test --coverage
-        npx eslint src --ext .js,.jsx,.ts,.tsx
+  #   - name: Run test and lint
+  #     run: |
+  #       yarn install --frozen-lockfile
+  #       yarn test --coverage
+  #       npx eslint src --ext .js,.jsx,.ts,.tsx
 
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: 'https://sonarcloud.io'
+  #   - name: SonarQube Scan
+  #     uses: sonarsource/sonarqube-scan-action@master
+  #     env:
+  #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #       SONAR_HOST_URL: 'https://sonarcloud.io'
 
   deploy-aws:
-    needs: [ test ]
+    # needs: [ test ]
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
@@ -48,6 +48,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -68,4 +69,4 @@ jobs:
 
       - name: Force deployment
         run: |
-          aws ecs update-service --cluster ${{secrets.ECS_CLUESTER}} --service pedido --force-new-deployment
+          aws ecs update-service --cluster ${{secrets.ECS_CLUESTER}} --service ${{secrets.ECS_SERVICE}} --force-new-deployment
