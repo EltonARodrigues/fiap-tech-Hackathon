@@ -87,11 +87,11 @@ export default class FilaService implements FilaRepository {
     return false;
   }
 
-  async enviaParaFila<T>(mensagem: T, fila: string): Promise<boolean> {
+  async enviaParaFila<T>(mensagem: string, fila: string): Promise<boolean> {
     try {
       const params = {
         QueueUrl: fila,
-        MessageBody: JSON.stringify(mensagem),
+        MessageBody: mensagem,
       };
 
       const command = new SendMessageCommand(params);

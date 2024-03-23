@@ -9,7 +9,7 @@ export interface SQSResponse {
 }
 
 export default interface FilaRepository {
-  enviaParaFila<T>(mensagem: T, fila: string): Promise<boolean>;
+  enviaParaFila<T>(mensagem: string, fila: string): Promise<boolean>;
   recebeMensagem<T>(fila: string): Promise<MensagemResponse<T>[] | null>;
   deletaMensagemProcessada(
     fila: string,
