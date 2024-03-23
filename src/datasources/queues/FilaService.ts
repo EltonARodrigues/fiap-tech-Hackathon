@@ -23,6 +23,7 @@ export default class FilaService implements FilaRepository {
       credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY as string,
         secretAccessKey: process.env.AWS_SECRET_KEY as string,
+        sessionToken: process.env.AWS_SESSION_TOKEN as string,
       },
     };
 

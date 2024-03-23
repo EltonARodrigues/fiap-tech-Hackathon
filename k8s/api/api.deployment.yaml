@@ -34,6 +34,21 @@ spec:
                 secretKeyRef:
                   key: mongo_password
                   name: fiap-tech-secrets
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  key: aws_region
+                  name: fiap-tech-secrets
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: aws_access_key
+                  name: fiap-tech-secrets
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: aws_secret_key
+                  name: fiap-tech-secrets
                   
             - name: DB_URI
               value: mongodb://$(MONGO_USERNAME):$(MONGO_PASSWORD)@fiap-tech-hackathon-db-svc:27017
@@ -44,11 +59,11 @@ kind: Service
 metadata:
   name:  fiap-tech-hackathon-svc
 spec:
-  type: NodePort
-  # type: LoadBalancer
+  # type: NodePort
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 3000
-      nodePort: 30081
+      nodePort: 30080
   selector:
     app:  fiap-tech-hackathon
