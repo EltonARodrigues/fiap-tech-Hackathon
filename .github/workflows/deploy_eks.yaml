@@ -70,7 +70,8 @@ jobs:
       run: |
         kubectl apply -f k8s/secrets.yaml
         kubectl apply -f k8s/api/api.deployment.yaml
-        kubectl apply -f k8s/api/api.svc.yaml
+        kubectl rollout restart deployment/fiap-tech-hackathon-deployment
+        kubectl apply -f k8s/api/db.deployment.yaml
 
     - name: Verificar Status do Deploy
       run: |

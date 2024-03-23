@@ -24,6 +24,11 @@ spec:
                 secretKeyRef:
                   name: fiap-tech-secrets
                   key: node_env
+            - name: NOTIFICATION_QUEUE
+              valueFrom:
+                secretKeyRef:
+                  name: fiap-tech-secrets
+                  key: notification_queue
             - name: MONGO_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -48,6 +53,11 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: aws_secret_key
+                  name: fiap-tech-secrets
+            - name: AWS_SESSION_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: aws_session_token
                   name: fiap-tech-secrets
                   
             - name: DB_URI
