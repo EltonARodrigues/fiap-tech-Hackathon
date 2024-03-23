@@ -17,7 +17,7 @@ Membros do grupo 30:
 
 ## Vídeo demonstrativo da aplicação
 
-O vídeo com a demonstração do MVP pode ser acessado [aqui](__LINK__):
+O vídeo com a demonstração do MVP pode ser acessado [aqui](https://www.youtube.com/watch?v=nAjVUHczkRY):
 
 - criação de novo registro de ponto de usuário já registrado no sistema
 - endpoint de acesso aos dados (limitado aos dados do próprio usuário logado)
